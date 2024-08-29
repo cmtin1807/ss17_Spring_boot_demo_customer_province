@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between mb-3">
+        <a href="/customers/create" class="btn btn-success">Create New Customer</a>
+
+
+
+        <form th:action="@{/customers}" method="GET" class="d-flex">
+            <label for="search" class="form-label me-2">Search:</label>
+            <input type="text" id="search" name="search" th:value="${search}" class="form-control me-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+    <a href="/provinces" class="btn btn-primary">Province</a>
+
+    <h1 class="mb-4">Customers</h1>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">First Name</th>
+            <th scope="col">Last Name</th>
+            <th scope="col">Province</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="customer,cStatus : ${customers}">
+            <tr>
+                <th scope="row" th:text="${cStatus.count}"></th>
+                <td th:text="${customer.firstName}"></td>
+                <td th:text="${customer.lastName}"></td>
+                <th:block th:if="${customer.province !=null}">
+                    <td th:text="${customer.province.name}"></td>
+                </th:block>
+                <th:block th:unless="${customer.province !=null}">
+                    <td>Khong co du lieu</td>
+                </th:block>
+                <td><a th:href="@{/customers/edit/__${customer.id}__}" class="btn btn-warning btn-sm">Update</a></td>
+                <td><a th:href="@{/customers/delete/__${customer.id}__}" class="btn btn-danger btn-sm">Delete</a></td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <th:block th:if="${customers != null}">
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
+                <!-- Previous page button -->
+                <li class="page-item" th:classappend="${!customers.hasPrevious()} ? 'disabled'">
+                    <a class="page-link" th:href="${customers.hasPrevious() ? '/customers?page=' + (customers.number - 1) + '&search=' + search : '#'}" aria-label="Previous">
+                        <span aria-hidden="true">«</span>
+                    </a>
+                </li>
+
+                <!-- Page numbers -->
+                <th:block th:if="${customers.totalPages > 0}">
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, customers.totalPages - 1)}"
+                        th:classappend="${customers.number == i} ? 'active'">
+                        <a class="page-link" th:text="${i + 1}" th:href="@{/customers(page=${i}, search=${search})}"></a>
+                    </li>
+                </th:block>
+
+                <!-- Next page button -->
+                <li class="page-item" th:classappend="${!customers.hasNext()} ? 'disabled'">
+                    <a class="page-link" th:href="${customers.hasNext() ? '/customers?page=' + (customers.number + 1) + '&search=' + search : '#'}" aria-label="Next">
+                        <span aria-hidden="true">»</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </th:block>
+
+</div>
+
+</body>
+</html>

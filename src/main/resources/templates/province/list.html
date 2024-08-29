@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Province List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <div>
+        <a th:href="@{/provinces/create}" class="btn btn-success">
+            Create New Province
+        </a>
+    </div>
+    <br>
+    <div>
+        <a th:href="@{/customers}" class="btn btn-primary">
+            Customer
+        </a>
+    </div>
+    <br>
+    <h1>List Province</h1>
+    <br>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Province</th>
+            <th>Edit</th>
+            <th>Delete</th>
+            <th>Detail</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="p:${provinces}">
+            <td th:text="${p.id}"></td>
+            <td th:text="${p.name}"></td>
+            <td><a th:href="@{provinces/edit/__${p.id}__}" class="btn btn-warning btn-sm">Edit</a></td>
+            <td><a th:href="@{provinces/delete/__${p.id}__}" class="btn btn-danger btn-sm">Delete</a></td>
+            <td><a th:href="@{provinces/detail/__${p.id}__}" class="btn btn-info btn-sm">Detail</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>Province Name</th>
+            <th>Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="number:${provinceCount}">
+            <td th:text="${number.name}"></td>
+            <td th:text="${number.number}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+</body>
+</html>
